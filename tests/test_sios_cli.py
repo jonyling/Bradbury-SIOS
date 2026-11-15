@@ -27,9 +27,10 @@ def test_sios_seed_dry_run(capsys) -> None:
 
 def test_sios_deadlines_and_digest(capsys) -> None:
     assert sios_main(["deadlines", "--as-of", "2026-11-15", "--within-days", "60"]) == 0
-    assert sios_main(["digest"]) == 0
+    assert sios_main(["digest", "--as-of", "2026-11-15"]) == 0
     out = capsys.readouterr().out
     assert PRODUCT_NAME in out or "synthetic" in out.lower()
+    assert "No news APIs" in out
 
 
 def test_sios_packs_lists_bradbury_stubs(capsys) -> None:
@@ -38,6 +39,13 @@ def test_sios_packs_lists_bradbury_stubs(capsys) -> None:
     assert "corp-sec" in out
     assert "accounting" in out
     assert "hr-advisory" in out
+
+
+def test_sios_checklist_demo_incorporation(capsys) -> None:
+    assert sios_main(["checklist", "--demo-incorporation"]) == 0
+    out = capsys.readouterr().out
+    assert "LODGED" in out
+    assert "E-505" in out
 
 
 def test_ste_packs_archived_not_active() -> None:

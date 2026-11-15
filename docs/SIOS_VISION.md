@@ -12,14 +12,19 @@ The full vision, phased roadmap, keep/adapt/discard table, and immediate build a
 - Org skeleton: `docs/bradbury-org-skeleton.md`
 - Synthetic data: `docs/bradbury-synthetic-data.md`
 - Phase 0 execution plan: `docs/phase-0-execution-plan.md`
+- Phase 1 execution plan: `docs/phase-1-execution-plan.md`
 
-## Phase 0 in this repo
+## Phase status in this repo
 
-- Product surface renamed to Bradbury SIOS (`sios/` facade).
-- STE / news / WSH / adverse / Dataverse paths quarantined under `archive/legacy-ste/` and module `QUARANTINED.md` markers.
-- Synthetic fixtures in `data/synthetic/` (`is_synthetic=true`).
-- Service-line stubs in `config/bradbury/`.
+| Phase | Status |
+|-------|--------|
+| 0 — Foundation / quarantine / synthetic seed | Done on `main` |
+| 1 — MVP operating core (clients, engagements, tasks, calendar, docs, three packs, Principal UI, ReviewGate) | This branch |
+| 2 — Search desk / delivery depth | Not started |
+| 3 — Co-Pilot insight layer | Not started |
 
 ## Rule
 
 Agents propose. Deterministic functions decide. A named human approves.
+
+No LLM path may mark a filing **lodged** or an invoice **issued**.

@@ -2,15 +2,15 @@
 
 Agents propose. Deterministic functions decide. A named human approves.
 
-This package is the Phase 0 product facade. Legacy grit-scan DNA remains under
-``grit/`` for ReviewGate, TransitionGuard, workflow, reports, and the Streamlit shell.
+Phase 1 MVP operating core lives in this package. Legacy grit-scan DNA remains under
+``grit/`` for ReviewGate primitives, report renderers, and quarantined STE modules.
 """
 
 PRODUCT_NAME = "Bradbury SIOS"
 PRODUCT_SHORT = "SIOS"
 PRODUCT_TAGLINE = "SME SI Operating System for Bradbury Consulting"
 RULE = "Agents propose. Deterministic functions decide. A named human approves."
-PHASE = "0-foundation"
+PHASE = "1-mvp"
 
 __all__ = [
     "PRODUCT_NAME",

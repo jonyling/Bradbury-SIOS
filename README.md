@@ -2,7 +2,7 @@
 
 **Bradbury SIOS** is the SME SI Operating System for Bradbury Consulting Pte Ltd — the internal operating layer for clients, engagements, statutory calendars, delivery work, documents, staffing, and management visibility.
 
-This repository was seeded from grit-scan-platform DNA and is being repositioned in **Phase 0** away from ST Engineering external risk scanning. It is an independent product, not a risk scanner.
+This repository was seeded from grit-scan-platform DNA and repositioned in **Phase 0**. **Phase 1** adds the MVP operating core on synthetic data.
 
 See [docs/SIOS_VISION.md](docs/SIOS_VISION.md) for the vision stub and pointers to the full plan.
 
@@ -10,37 +10,33 @@ See [docs/SIOS_VISION.md](docs/SIOS_VISION.md) for the vision stub and pointers 
 
 Agents propose. Deterministic functions decide. A named human approves.
 
-Optional AI assistance **proposes** but never silently decides. Compliance and billing outcomes require a named human through `ReviewGate()`.
+Optional AI assistance **proposes** but never silently decides. Compliance and billing terminals (`lodged`, `issued`) require a named **human** through ReviewGate + TransitionGuard — never an LLM actor.
 
-## Phase 0 status
+## Phase 1 status
 
 | Area | Status |
 |------|--------|
-| Product name / CLI (`sios`) | Active |
-| Synthetic Bradbury org + clients (`data/synthetic/`) | Active — **FAKE data only** |
-| Service-line pack stubs (`config/bradbury/`) | Active stubs |
-| ReviewGate / TransitionGuard / workflow DNA | Kept |
-| Streamlit shell / Co-Pilot pattern / report renderers | Kept (light rebrand) |
-| STE packs, news acquisition, WSH, adverse, Dataverse STE, FIRMS | Quarantined → `archive/legacy-ste/` |
+| Client + Engagement + Task + Compliance + Document metadata | Active on synthetic fixtures |
+| Live packs `corp-sec` / `accounting` / `hr-advisory` | Checklists drive workstreams |
+| Principal dashboard + practice queues (Streamlit) | `sios ui` |
+| Deterministic SLA / filing status | Due 7/14/30 · at-risk · capacity |
+| ReviewGate on ready to lodge/send (FS, policy, invoice) | `sios approve` / UI Approvals |
+| Principal digest | No news APIs |
+| STE / news / WSH / adverse / Dataverse | Remain quarantined |
 
 ## Repository layout
 
 | Path | Contents |
 |------|----------|
-| `sios/` | Product facade: `seed`, `deadlines`, `digest`, `packs`, `ui` |
-| `grit/core/` | Deterministic DNA including `ReviewGate()` and `TransitionGuard()` |
-| `grit/workflow/` | Supervisor / package review patterns |
-| `grit/report/` | Word / PowerPoint / Excel / Markdown renderers |
-| `grit/ui/` | Streamlit shell |
-| `grit/copilot/` | Co-Pilot pattern (to be grounded on SIOS records in later phases) |
-| `grit/acquisition/`, `adverse/`, `wsh/`, `dataverse/`, `daily/` | **Quarantined** legacy STE/news modules |
-| `config/bradbury/` | Corp-sec, accounting, hr-advisory checklist stubs |
+| `sios/` | Product operating core + CLI + Streamlit |
+| `sios/store.py` | In-memory store seeded from synthetic JSON |
+| `sios/packs.py` / `workflow.py` / `gates.py` | Packs, checklist workflow, ReviewGate adapter |
+| `sios/digest.py` / `sla.py` | Principal digest + deterministic SLA |
+| `grit/core/` | ReviewGate primitive (+ legacy TransitionGuard DNA) |
+| `config/bradbury/` | Live corp-sec, accounting, hr-advisory checklists |
 | `data/synthetic/` | Synthetic fixtures (`is_synthetic=true`) |
-| `archive/legacy-ste/` | Archived STE packs, profiles, examples |
-| `specs/` | Active trust-model specs (ReviewGate, TransitionGuard, workflow) |
-| `specs/archive/` | Archived STE risk-scanner specs |
-| `tests/` | Default suite: DNA + SIOS foundation |
-| `tests/quarantined/` | Legacy STE/news tests (not collected by default) |
+| `archive/legacy-ste/` | Archived STE packs |
+| `tests/` | DNA + SIOS Phase 0/1 suite |
 
 ## Install the local environment
 
@@ -53,32 +49,24 @@ python3 -m venv .venv
 ## Active commands
 
 ```bash
-.venv/bin/python -m sios --help
-.venv/bin/python -m sios seed
-.venv/bin/python -m sios deadlines --within-days 45
-.venv/bin/python -m sios digest
-.venv/bin/python -m sios packs
-.venv/bin/python -m sios ui
+python -m sios --help
+python -m sios seed
+python -m sios deadlines --as-of 2026-11-15 --within-days 45
+python -m sios digest --as-of 2026-11-15
+python -m sios packs
+python -m sios checklist --eng-id E-505
+python -m sios checklist --demo-incorporation
+python -m sios ui
 ```
-
-`python -m grit` remains as a **legacy** entry point. STE/news commands print a quarantine message and exit.
 
 ## Synthetic data
 
-Fixtures under `data/synthetic/` are **entirely fake**. They use `SYN-` ids and `is_synthetic: true`. The loader refuses any file that omits that flag. Do not treat them as real Bradbury clients or filings.
+Fixtures under `data/synthetic/` are **entirely fake**. They use `SYN-` ids and `is_synthetic: true`. Demo clients are labeled **SYNTHETIC** in the UI and digest. Do not treat them as real Bradbury clients or filings.
 
 ## Tests
 
 ```bash
-.venv/bin/python -m pytest -q
+python -m pytest -q
 ```
 
-Default collection excludes `tests/quarantined/`. DNA checks:
-
-```bash
-.venv/bin/python -m pytest tests/test_p3_review_gate.py tests/test_p3_transition_guard.py tests/test_p3_supervisor.py tests/test_sios_synthetic.py tests/test_sios_cli.py -q
-```
-
-## What comes next (not Phase 0)
-
-Phase 1 MVP: Client + Engagement + Task + Compliance Calendar + Document metadata, with live corp-sec / accounting / hr-advisory packs and a Principal dashboard. See the store vision plan.
+Default collection excludes `tests/quarantined/`.
