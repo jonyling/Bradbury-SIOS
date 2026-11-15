@@ -6,6 +6,7 @@ version: 0.1.0
 review_gates:
   - fs_send
   - gst_ready
+  - invoice_ready
 checklists:
   monthly_close:
     - id: open_period

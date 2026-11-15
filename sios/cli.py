@@ -1,6 +1,6 @@
 """Bradbury SIOS command line. Run from the repository root:
 
-    .venv/bin/python -m sios --help
+    python -m sios --help
 """
 
 from __future__ import annotations
@@ -8,11 +8,11 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from datetime import date, datetime, timezone
+from datetime import date
 from typing import Any
 
 from sios import PRODUCT_NAME, PRODUCT_TAGLINE, RULE
-from sios.synthetic import DISCLAIMER, seed, summary
+from sios.synthetic import DISCLAIMER, seed
 
 
 def cmd_seed(args: argparse.Namespace) -> int:
@@ -32,90 +32,119 @@ def cmd_seed(args: argparse.Namespace) -> int:
 
 
 def cmd_deadlines(args: argparse.Namespace) -> int:
-    """List synthetic compliance deadlines (Phase 0 stub over fixtures)."""
-    from sios.synthetic import load_all
+    """List synthetic compliance deadlines with deterministic filing status."""
+    from sios.digest import compliance_calendar
+    from sios.store import open_store
 
-    bundle = load_all()
-    events = list(bundle["calendar_kpis_docs"].get("compliance_events") or [])
-    clients = {c["client_id"]: c for c in bundle["clients_engagements"].get("clients") or []}
+    store = open_store()
     today = args.as_of or date.today()
+    rows = compliance_calendar(
+        store,
+        as_of=today,
+        within_days=args.within_days if args.within_days is not None else 45,
+        include_overdue=args.include_overdue,
+    )
     print(DISCLAIMER)
     print(f"{PRODUCT_NAME} deadlines (synthetic) as of {today.isoformat()}")
-    shown = 0
-    for event in sorted(events, key=lambda row: row.get("due_at") or ""):
-        due = event.get("due_at")
-        if not due:
-            continue
-        due_date = date.fromisoformat(due)
-        if args.within_days is not None and (due_date - today).days > args.within_days:
-            continue
-        if args.within_days is not None and (due_date - today).days < 0 and not args.include_overdue:
-            continue
-        client_id = event.get("client_id")
-        client_name = clients.get(client_id, {}).get("name") if client_id else event.get("legal_entity_id")
+    for row in rows:
         print(
-            f"  {due}  {event.get('status', '?'):16}  {event.get('type', '?'):32}  "
-            f"{client_name or '—'}  owner={event.get('owner_user_id', '—')}"
+            f"  {row['due_at']}  {row['filing_status']:12}  {row['type']:32}  "
+            f"{row['client_name'] or '—'}  owner={row['owner_user_id']}"
         )
-        shown += 1
-    print(f"{shown} event(s). Phase 0 stub — not ACRA/MOM source of truth.")
+    print(f"{len(rows)} event(s). Not ACRA/MOM source of truth.")
     return 0
 
 
 def cmd_digest(args: argparse.Namespace) -> int:
-    """Principal digest stub over synthetic engagements and deadlines (no news APIs)."""
-    from sios.synthetic import load_all
+    """Principal digest over synthetic SIOS records (no news APIs)."""
+    from sios.digest import build_digest, render_digest_text
+    from sios.store import open_store
 
-    bundle = load_all()
-    counts = summary(bundle)
-    events = bundle["calendar_kpis_docs"].get("compliance_events") or []
-    engagements = bundle["clients_engagements"].get("engagements") or []
-    at_risk = [
-        e for e in engagements
-        if e.get("status") == "active"
-        and any(t.get("status") in {"blocked", "waiting"} for t in e.get("tasks") or [])
-    ]
-    upcoming = sorted(
-        (e for e in events if e.get("due_at")),
-        key=lambda row: row["due_at"],
-    )[:5]
-    print(DISCLAIMER)
-    print(f"{PRODUCT_NAME} principal digest (synthetic)")
-    print(f"Generated (UTC): {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M')}")
-    print(f"Clients: {counts['clients']} · Engagements: {counts['engagements']} · Users: {counts['users']}")
-    print(f"At-risk engagements (blocked/waiting tasks): {len(at_risk)}")
-    for eng in at_risk:
-        print(f"  {eng['eng_id']}  pack={eng.get('pack')}  client={eng.get('client_id')}  owner={eng.get('owner_user_id')}")
-    print("Upcoming compliance (sample):")
-    for event in upcoming:
-        print(f"  {event.get('due_at')}  {event.get('type')}  {event.get('status')}  {event.get('client_id') or event.get('legal_entity_id')}")
-    print("No news APIs called. Numbers come only from synthetic fixtures.")
+    store = open_store()
+    digest = build_digest(store, as_of=args.as_of)
+    print(render_digest_text(digest))
+    if args.json:
+        print(json.dumps(digest, indent=2, default=str))
     return 0
 
 
 def cmd_ui(_args: argparse.Namespace) -> int:
-    """Start the Streamlit shell (rebranded Phase 0 surface)."""
-    from grit.cli import cmd_ui as grit_ui
+    """Start the Phase 1 Streamlit Principal dashboard."""
+    import subprocess
+    from pathlib import Path
 
-    return int(grit_ui(_args) or 0)
+    app = Path(__file__).resolve().parent / "ui" / "app.py"
+    return subprocess.call([sys.executable, "-m", "streamlit", "run", str(app), "--server.headless", "true"])
 
 
 def cmd_packs(_args: argparse.Namespace) -> int:
-    """List Bradbury service-line pack stubs."""
-    from pathlib import Path
+    """List live Bradbury service-line packs."""
+    from sios.packs import list_live_packs
 
-    from grit.settings import CONFIG_DIR
-
-    root = CONFIG_DIR / "bradbury"
-    print(f"{PRODUCT_NAME} pack stubs under {root}")
-    if not root.is_dir():
-        print("  (missing)")
-        return 1
-    for path in sorted(root.iterdir()):
-        if path.is_dir():
-            checklist = path / "checklist.yaml"
-            print(f"  {path.name}: {'checklist.yaml' if checklist.is_file() else '(no checklist yet)'}")
+    print(f"{PRODUCT_NAME} live packs")
+    for row in list_live_packs():
+        print(
+            f"  {row['pack']}: {row['label']} v{row['version']} "
+            f"checklists={','.join(row['checklists'])} gates={','.join(row['review_gates'])}"
+        )
     return 0
+
+
+def cmd_checklist(args: argparse.Namespace) -> int:
+    """Show pack-driven checklist progress for an engagement."""
+    from sios.store import open_store
+    from sios.workflow import checklist_progress, run_incorporation_demo
+
+    store = open_store()
+    if args.demo_incorporation:
+        result = run_incorporation_demo(store, reviewer_id=args.reviewer or "U-002")
+        print(DISCLAIMER)
+        print(json.dumps(result, indent=2, default=str))
+        return 0 if result.get("lodged", {}).get("persisted") else 1
+    progress = checklist_progress(store, args.eng_id)
+    print(DISCLAIMER)
+    print(json.dumps(progress, indent=2))
+    return 0
+
+
+def cmd_approve(args: argparse.Namespace) -> int:
+    """Submit / ReviewGate / human-terminal actions for a deliverable package."""
+    from sios.store import open_store
+    from sios.workflow import human_terminal_action, review_package, submit_for_review
+
+    store = open_store()
+    if args.action == "submit":
+        package = submit_for_review(
+            store,
+            eng_id=args.eng_id,
+            task_id=args.task_id,
+            actor_id=args.actor or "U-009",
+            actor_type=args.actor_type,
+        )
+        print(json.dumps(package, indent=2))
+        return 0
+    if args.action == "review":
+        result = review_package(
+            store,
+            package_id=args.package_id,
+            reviewer_id=args.actor or "U-002",
+            intent=args.intent,
+            reviewer_is_human=args.actor_type.upper() == "HUMAN",
+        )
+        print(json.dumps(result, indent=2, default=str))
+        return 0 if result.get("persisted") else 1
+    if args.action == "terminal":
+        result = human_terminal_action(
+            store,
+            package_id=args.package_id,
+            actor_id=args.actor or "U-002",
+            actor_type=args.actor_type,
+            terminal=args.terminal,
+        )
+        print(json.dumps(result, indent=2, default=str))
+        return 0 if result.get("persisted") else 1
+    print("Unknown action", file=sys.stderr)
+    return 2
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -130,17 +159,36 @@ def build_parser() -> argparse.ArgumentParser:
     sub.add_argument("--json", action="store_true", help="Also print counts as JSON.")
     sub.set_defaults(handler=cmd_seed)
 
-    sub = commands.add_parser("deadlines", help="List synthetic compliance deadlines (Phase 0 stub).")
+    sub = commands.add_parser("deadlines", help="List synthetic compliance deadlines with SLA filing status.")
     sub.add_argument("--as-of", type=date.fromisoformat, help="Reference date YYYY-MM-DD (default today).")
     sub.add_argument("--within-days", type=int, default=45, help="Only events due within N days (default 45).")
     sub.add_argument("--include-overdue", action="store_true", help="Include overdue events.")
     sub.set_defaults(handler=cmd_deadlines)
 
-    commands.add_parser("digest", help="Principal digest from synthetic records (no news APIs).").set_defaults(
-        handler=cmd_digest
-    )
-    commands.add_parser("packs", help="List Bradbury service-line pack stubs.").set_defaults(handler=cmd_packs)
-    commands.add_parser("ui", help="Start the Streamlit shell.").set_defaults(handler=cmd_ui)
+    sub = commands.add_parser("digest", help="Principal digest from synthetic records (no news APIs).")
+    sub.add_argument("--as-of", type=date.fromisoformat, default=None)
+    sub.add_argument("--json", action="store_true")
+    sub.set_defaults(handler=cmd_digest)
+
+    commands.add_parser("packs", help="List live Bradbury service-line packs.").set_defaults(handler=cmd_packs)
+    commands.add_parser("ui", help="Start the Streamlit Principal dashboard.").set_defaults(handler=cmd_ui)
+
+    sub = commands.add_parser("checklist", help="Show or demo pack-driven engagement checklist.")
+    sub.add_argument("--eng-id", default="E-505", help="Engagement id (default E-505 incorporation).")
+    sub.add_argument("--demo-incorporation", action="store_true", help="Run E-505 end-to-end including human lodge.")
+    sub.add_argument("--reviewer", default="U-002")
+    sub.set_defaults(handler=cmd_checklist)
+
+    sub = commands.add_parser("approve", help="ReviewGate / human terminal actions.")
+    sub.add_argument("action", choices=["submit", "review", "terminal"])
+    sub.add_argument("--eng-id")
+    sub.add_argument("--task-id")
+    sub.add_argument("--package-id")
+    sub.add_argument("--intent", default="APPROVE")
+    sub.add_argument("--terminal", default="LODGED", choices=["LODGED", "SENT", "ISSUED"])
+    sub.add_argument("--actor", default=None)
+    sub.add_argument("--actor-type", default="HUMAN")
+    sub.set_defaults(handler=cmd_approve)
     return parser
 
 
