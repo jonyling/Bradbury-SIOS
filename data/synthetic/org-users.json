@@ -1,0 +1,46 @@
+{
+  "is_synthetic": true,
+  "disclaimer": "FAKE data for Bradbury SIOS demos. Not real people, clients, or filings.",
+  "legal_entities": [
+    {
+      "entity_id": "ORG-BC",
+      "legal_name": "Bradbury Consulting Pte Ltd (demo mirror)",
+      "uen_synthetic": "SYN200102375C",
+      "note": "Real UEN exists publicly; this fixture uses SYN prefix for demo isolation.",
+      "roles_home": ["principal", "practice_lead", "senior_consultant", "accountant", "hr_consultant", "associate", "bd_manager", "ops_admin"]
+    },
+    {
+      "entity_id": "ORG-BS",
+      "legal_name": "Bradbury Search Pte Ltd (demo mirror)",
+      "uen_synthetic": "SYN201001770K",
+      "ea_licence_synthetic": "SYN-11C5093",
+      "roles_home": ["search_consultant", "search_lead"]
+    }
+  ],
+  "role_catalog": [
+    {"role_key": "principal", "label": "Principal Consultant"},
+    {"role_key": "practice_lead", "label": "Practice Lead"},
+    {"role_key": "senior_consultant", "label": "Senior Consultant"},
+    {"role_key": "accountant", "label": "Accountant"},
+    {"role_key": "hr_consultant", "label": "HR Consultant"},
+    {"role_key": "associate", "label": "Associate"},
+    {"role_key": "bd_manager", "label": "Business Development Manager"},
+    {"role_key": "ops_admin", "label": "Operations Admin"},
+    {"role_key": "search_consultant", "label": "Search Consultant"},
+    {"role_key": "search_lead", "label": "Search Lead"}
+  ],
+  "users": [
+    {"user_id": "U-001", "display_name": "Ava Principal", "role_key": "principal", "entity_id": "ORG-BC", "practice": "all"},
+    {"user_id": "U-002", "display_name": "Ben CorpSec", "role_key": "practice_lead", "entity_id": "ORG-BC", "practice": "corp-sec"},
+    {"user_id": "U-003", "display_name": "Cara Finance", "role_key": "practice_lead", "entity_id": "ORG-BC", "practice": "accounting"},
+    {"user_id": "U-004", "display_name": "Dan Advisory", "role_key": "senior_consultant", "entity_id": "ORG-BC", "practice": "management-advisory"},
+    {"user_id": "U-005", "display_name": "Elena Books", "role_key": "accountant", "entity_id": "ORG-BC", "practice": "accounting"},
+    {"user_id": "U-006", "display_name": "Farah Books", "role_key": "accountant", "entity_id": "ORG-BC", "practice": "accounting"},
+    {"user_id": "U-007", "display_name": "Gina HR", "role_key": "hr_consultant", "entity_id": "ORG-BC", "practice": "hr-advisory"},
+    {"user_id": "U-008", "display_name": "Hao BD", "role_key": "bd_manager", "entity_id": "ORG-BC", "practice": "bd"},
+    {"user_id": "U-009", "display_name": "Ivy Assoc", "role_key": "associate", "entity_id": "ORG-BC", "practice": "corp-sec"},
+    {"user_id": "U-010", "display_name": "Jake Assoc", "role_key": "associate", "entity_id": "ORG-BC", "practice": "accounting"},
+    {"user_id": "U-011", "display_name": "Kai Search", "role_key": "search_consultant", "entity_id": "ORG-BS", "practice": "search-fb"},
+    {"user_id": "U-012", "display_name": "Lia Ops", "role_key": "ops_admin", "entity_id": "ORG-BC", "practice": "ops"}
+  ]
+}

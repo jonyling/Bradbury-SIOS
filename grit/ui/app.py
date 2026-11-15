@@ -1,12 +1,12 @@
-"""GRIT-Scan dashboard with the chat beneath it.
+"""Bradbury SIOS dashboard shell (Streamlit) with the Co-Pilot drawer pattern.
 
 Run from the repository root:
 
-    .venv/bin/python -m grit ui
+    .venv/bin/python -m sios ui
 
-The screen reads the signal pool. Its buttons call governed functions. The reader's `profile.md` shapes the order (spec 39).
-A package decision goes through `ReviewGate()`. A management request waits for a reviewer to activate it. The screen never
-writes a workflow row itself.
+Legacy GRIT-Scan reader profiles were archived in Phase 0. The shell keeps ReviewGate
+actions and the Co-Pilot pattern for later SIOS grounding. The screen never writes a
+workflow row itself.
 """
 
 from __future__ import annotations
@@ -39,7 +39,7 @@ def main() -> None:
     from grit.ui.view_model import kpis, profile_in_force, screen_context, signal_detail, signal_rows, table_html
 
     load_local_env()
-    st.set_page_config(page_title="GRIT-Scan", layout="wide")
+    st.set_page_config(page_title="Bradbury SIOS", layout="wide")
 
     def show_table(rows: Sequence, columns: Sequence[str] | None = None) -> None:
         body = table_html(rows, columns)
@@ -66,13 +66,24 @@ def main() -> None:
     profiles = load_profiles()
     readers = {profile.label: profile for profile in profiles.values() if profile.briefs}
     labels = list(readers)
-    default = next((number for number, label in enumerate(labels) if readers[label].profile_id == "wilson"), 0)
     with st.sidebar:
-        st.title("GRIT-Scan")
+        st.title("Bradbury SIOS")
+        st.caption("SME SI Operating System · synthetic demos only unless configured otherwise")
+        if not labels:
+            st.info(
+                "No reader profiles in config/profiles (STE profiles archived in Phase 0). "
+                "Use `python -m sios seed`, `sios deadlines`, and `sios digest` for the synthetic foundation. "
+                "Principal dashboard lands in Phase 1."
+            )
+            return
+        default = next((number for number, label in enumerate(labels) if readers[label].profile_id == "wilson"), 0)
         profile = readers[st.selectbox("Reader", labels, index=default)]
         runs = listed_runs(db, profile)
         if not runs:
-            st.info("No run yet for this reader's packs. Start one with: .venv/bin/python -m grit weekly --dry-run")
+            st.info(
+                "No run yet for this reader's packs. Legacy weekly scan is quarantined. "
+                "Use: .venv/bin/python -m sios digest"
+            )
             return
         run_id = st.selectbox("Run", [row["run_id"] for row in runs])
         st.caption(f"Aperture: {profile.aperture.replace('_', ' ').lower()}. Packs: {', '.join(profile.packs)}. Review role: {profile.review_role.replace('_', ' ').lower()}.")

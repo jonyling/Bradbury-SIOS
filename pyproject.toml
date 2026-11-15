@@ -3,16 +3,18 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "grit-scan"
-version = "0.6.0"
-description = "GRIT-Scan: a governed risk tracker for ST Engineering executives, business areas, and lines of business."
+name = "bradbury-sios"
+version = "0.1.0"
+description = "Bradbury SIOS: SME SI Operating System for Bradbury Consulting Pte Ltd."
 requires-python = ">=3.11"
 
 [project.scripts]
+sios = "sios.cli:main"
 grit = "grit.cli:main"
 
 [tool.setuptools.packages.find]
-include = ["grit*"]
+include = ["sios*", "grit*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+norecursedirs = ["quarantined", ".*", "build", "dist", "*.egg", "archive"]

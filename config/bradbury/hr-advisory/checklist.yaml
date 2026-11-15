@@ -1,0 +1,20 @@
+# SYNTHETIC playbook stub — Bradbury SIOS Phase 0
+pack: hr-advisory
+label: HR Advisory
+is_synthetic_playbook: true
+version: 0.1.0
+review_gates:
+  - policy_final
+checklists:
+  policy_suite:
+    - id: discovery_workshop
+      title: Discovery workshop
+    - id: draft_handbook
+      title: Draft employee handbook
+    - id: employment_letter_templates
+      title: Employment letter templates
+    - id: client_review_cycle
+      title: Client review cycle
+    - id: finalise_train
+      title: Finalise & train managers
+      needs_review_gate: true
