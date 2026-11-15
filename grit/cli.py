@@ -1,9 +1,11 @@
-"""GRIT-Scan command line. Run from the repository root:
+"""Legacy grit command line (Bradbury SIOS DNA shell).
 
-    .venv/bin/python -m grit --help
+Prefer the product CLI:
 
-The reader commands work on the signal pool (output/grit.sqlite, or GRIT_DB). The digest commands run the earlier
-business-area digest on run folders under output/brave-plan/.
+    .venv/bin/python -m sios --help
+
+STE / news / WSH / adverse / Dataverse commands are quarantined in Phase 0.
+Kept: review (ReviewGate), db, ui.
 """
 
 from __future__ import annotations
@@ -740,8 +742,26 @@ def _delegates() -> dict[str, tuple[str, Callable[[], Callable[..., Any]], str]]
     }
 
 
+# STE / news / risk-scanner commands disabled as active Bradbury SIOS paths (Phase 0).
+QUARANTINED_COMMANDS = frozenset({
+    "plan", "scan", "weekly", "digest", "assess", "baseline-draft", "scenarios", "agents",
+    "report", "resume-report", "weekly-memory", "memory-admit", "red", "misses", "corrections",
+    "feedback", "requests", "airis", "dataverse",
+    "pack-build", "ratings", "scorecard", "pack-show", "library-ingest", "sots", "ask",
+    "scheduled", "adverse", "daily", "index", "feeds", "pool-add", "scenarios-approve",
+    "scenarios-track", "notes", "profile", "pack-init", "gaps", "digest-plan", "digest-search",
+    "digest-embed", "digest-filter", "digest-loop", "digest-report",
+})
+
+
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="grit", description="GRIT-Scan: agents propose, deterministic functions decide, a named human approves.")
+    parser = argparse.ArgumentParser(
+        prog="grit",
+        description=(
+            "Legacy grit shell for Bradbury SIOS DNA. "
+            "Prefer `python -m sios`. Agents propose; deterministic functions decide; a named human approves."
+        ),
+    )
     commands = parser.add_subparsers(dest="command", required=True)
 
     def reader(name: str, handler: Callable[[argparse.Namespace], int], help_text: str) -> argparse.ArgumentParser:
@@ -909,11 +929,23 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     load_local_env()
     argv = list(sys.argv[1:] if argv is None else argv)
+    if argv and argv[0] in QUARANTINED_COMMANDS and not {"-h", "--help"} & set(argv[1:2]):
+        from sios.quarantine import refuse
+
+        return refuse(argv[0])
     delegates = _delegates()
     if argv and argv[0] in delegates and not {"-h", "--help"} & set(argv[:1]):
+        if argv[0] in QUARANTINED_COMMANDS:
+            from sios.quarantine import refuse
+
+            return refuse(argv[0])
         _text, loader, prog = delegates[argv[0]]
         return _delegate(loader(), prog)(argparse.Namespace(rest=argv[1:]))
     args = build_parser().parse_args(argv)
+    if getattr(args, "command", None) in QUARANTINED_COMMANDS:
+        from sios.quarantine import refuse
+
+        return refuse(args.command)
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     return int(args.handler(args) or 0)
 

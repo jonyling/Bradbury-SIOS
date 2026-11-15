@@ -1,0 +1,114 @@
+{
+  "is_synthetic": true,
+  "disclaimer": "FAKE compliance calendar, KPIs, and document catalog for Bradbury SIOS.",
+  "compliance_events": [
+    {
+      "event_id": "CE-01",
+      "client_id": "C-101",
+      "eng_id": "E-501",
+      "type": "annual_return",
+      "due_at": "2026-11-30",
+      "owner_user_id": "U-002",
+      "status": "upcoming"
+    },
+    {
+      "event_id": "CE-02",
+      "client_id": "C-101",
+      "eng_id": "E-501",
+      "type": "agm",
+      "due_at": "2026-12-15",
+      "owner_user_id": "U-002",
+      "status": "upcoming"
+    },
+    {
+      "event_id": "CE-03",
+      "client_id": "C-101",
+      "eng_id": "E-502",
+      "type": "gst_submission",
+      "due_at": "2026-11-28",
+      "owner_user_id": "U-005",
+      "status": "in_progress",
+      "needs_review_gate": true
+    },
+    {
+      "event_id": "CE-04",
+      "client_id": "C-103",
+      "eng_id": "E-505",
+      "type": "incorporation_lodge_target",
+      "due_at": "2026-11-20",
+      "owner_user_id": "U-009",
+      "status": "blocked_docs"
+    },
+    {
+      "event_id": "CE-05",
+      "client_id": "C-102",
+      "eng_id": "E-504",
+      "type": "client_pass_renewal_reminder",
+      "due_at": "2026-12-01",
+      "owner_user_id": "U-007",
+      "status": "upcoming",
+      "note": "Reminder only — SIOS is not MOM source of truth"
+    },
+    {
+      "event_id": "CE-06",
+      "client_id": null,
+      "legal_entity_id": "ORG-BS",
+      "type": "ea_licence_internal_reminder",
+      "due_at": "2027-01-10",
+      "owner_user_id": "U-011",
+      "status": "upcoming"
+    }
+  ],
+  "kpis": [
+    {"kpi_id": "K-01", "name": "Filing on-time rate", "target": 0.98, "current_synthetic": 0.97, "viewer": "principal"},
+    {"kpi_id": "K-02", "name": "Monthly close on-time", "target": 0.95, "current_synthetic": 0.92, "viewer": "practice_lead_accounting"},
+    {"kpi_id": "K-03", "name": "Engagement SLA green", "target": 0.9, "current_synthetic": 0.88, "viewer": "principal"},
+    {"kpi_id": "K-04", "name": "Utilisation", "target_range": [0.7, 0.85], "current_synthetic": 0.78, "viewer": "principal"},
+    {"kpi_id": "K-05", "name": "Retainer gross margin", "target": 0.45, "current_synthetic": 0.51, "viewer": "principal"},
+    {"kpi_id": "K-06", "name": "Proposal win rate", "target": 0.35, "current_synthetic": 0.41, "viewer": "bd_manager"},
+    {"kpi_id": "K-07", "name": "Search days-to-shortlist", "target_max_days": 14, "current_synthetic": 11, "viewer": "search_consultant"},
+    {"kpi_id": "K-08", "name": "Doc ReviewGate cycle time (business days)", "target_max_days": 2, "current_synthetic": 1.5, "viewer": "ops_admin"}
+  ],
+  "document_types": [
+    {"doc_type": "proposal", "pack": "bd"},
+    {"doc_type": "sow", "pack": "all"},
+    {"doc_type": "constitution", "pack": "corp-sec"},
+    {"doc_type": "board_resolution", "pack": "corp-sec"},
+    {"doc_type": "agm_pack", "pack": "corp-sec"},
+    {"doc_type": "fs_draft", "pack": "accounting"},
+    {"doc_type": "gst_draft", "pack": "accounting"},
+    {"doc_type": "hr_policy", "pack": "hr-advisory"},
+    {"doc_type": "employment_letter", "pack": "hr-advisory"},
+    {"doc_type": "training_deck", "pack": "leadership"},
+    {"doc_type": "pm_schedule", "pack": "project-mgmt"},
+    {"doc_type": "candidate_cv", "pack": "search-fb"},
+    {"doc_type": "ea_checklist", "pack": "search-fb"},
+    {"doc_type": "meeting_minutes", "pack": "management-advisory"}
+  ],
+  "sample_documents": [
+    {
+      "doc_id": "D-9001",
+      "doc_type": "gst_draft",
+      "eng_id": "E-502",
+      "filename": "GST_2026Q3_draft.xlsx",
+      "status": "awaiting_review_gate",
+      "uploaded_by": "U-005"
+    },
+    {
+      "doc_id": "D-9002",
+      "doc_type": "hr_policy",
+      "eng_id": "E-504",
+      "filename": "Employee_Handbook_draft_v1.docx",
+      "status": "draft",
+      "uploaded_by": "U-007"
+    },
+    {
+      "doc_id": "D-9003",
+      "doc_type": "candidate_cv",
+      "eng_id": "E-503",
+      "filename": "CAND-778_CV.pdf",
+      "status": "active",
+      "uploaded_by": "U-011"
+    }
+  ]
+}

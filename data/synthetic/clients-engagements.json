@@ -1,0 +1,190 @@
+{
+  "is_synthetic": true,
+  "disclaimer": "FAKE clients and engagements for Bradbury SIOS. Not real customer data.",
+  "clients": [
+    {
+      "client_id": "C-101",
+      "name": "SYN Harbour Noodles Pte Ltd",
+      "industry": "F&B",
+      "jurisdiction": "SG",
+      "uen_synthetic": "SYN201912345A",
+      "contacts": [
+        {"name": "Morgan Owner", "title": "Managing Director", "email": "morgan.owner@example.invalid"}
+      ]
+    },
+    {
+      "client_id": "C-102",
+      "name": "SYN Peakfleet Logistics Pte Ltd",
+      "industry": "Logistics",
+      "jurisdiction": "SG",
+      "uen_synthetic": "SYN201876543B",
+      "contacts": [
+        {"name": "Priya Ops", "title": "COO", "email": "priya.ops@example.invalid"}
+      ]
+    },
+    {
+      "client_id": "C-103",
+      "name": "SYN Meridian Dental Group Pte Ltd",
+      "industry": "Dentistry",
+      "jurisdiction": "SG",
+      "uen_synthetic": "SYN202011122C",
+      "contacts": [
+        {"name": "Dr. Sam Clinic", "title": "Director", "email": "sam.clinic@example.invalid"}
+      ]
+    },
+    {
+      "client_id": "C-104",
+      "name": "SYN Lumen Apps Pte Ltd",
+      "industry": "Software",
+      "jurisdiction": "SG",
+      "uen_synthetic": "SYN202155566D",
+      "contacts": [
+        {"name": "Alex Founder", "title": "CEO", "email": "alex.founder@example.invalid"}
+      ]
+    },
+    {
+      "client_id": "C-105",
+      "name": "SYN Orient Lease Sdn Bhd",
+      "industry": "Vehicle lease",
+      "jurisdiction": "MY",
+      "uen_synthetic": "SYN-MY-778899",
+      "contacts": [
+        {"name": "Rina Lease", "title": "Director", "email": "rina.lease@example.invalid"}
+      ]
+    },
+    {
+      "client_id": "C-106",
+      "name": "SYN IronGate Security Pte Ltd",
+      "industry": "Security",
+      "jurisdiction": "SG",
+      "uen_synthetic": "SYN201733344E",
+      "contacts": [
+        {"name": "Tom Guard", "title": "General Manager", "email": "tom.guard@example.invalid"}
+      ]
+    },
+    {
+      "client_id": "C-107",
+      "name": "SYN BrightLoyalty Pte Ltd",
+      "industry": "Incentive programmes",
+      "jurisdiction": "SG",
+      "uen_synthetic": "SYN201900111F",
+      "contacts": [
+        {"name": "Nora Rewards", "title": "CFO", "email": "nora.rewards@example.invalid"}
+      ]
+    },
+    {
+      "client_id": "C-108",
+      "name": "SYN Cedar Furniture Pte Ltd",
+      "industry": "Furniture",
+      "jurisdiction": "SG",
+      "uen_synthetic": "SYN201644455G",
+      "contacts": [
+        {"name": "Owen Wood", "title": "Director", "email": "owen.wood@example.invalid"}
+      ]
+    }
+  ],
+  "engagements": [
+    {
+      "eng_id": "E-501",
+      "client_id": "C-101",
+      "legal_entity_id": "ORG-BC",
+      "type": "retainer",
+      "pack": "corp-sec",
+      "owner_user_id": "U-002",
+      "status": "active",
+      "fee_synthetic_sgd_monthly": 350,
+      "tasks": [
+        {"task_id": "T-5011", "title": "Prepare AGM notice draft", "assignee": "U-009", "due": "2026-12-01", "status": "open"},
+        {"task_id": "T-5012", "title": "Annual return working pack", "assignee": "U-002", "due": "2026-11-20", "status": "open"}
+      ]
+    },
+    {
+      "eng_id": "E-502",
+      "client_id": "C-101",
+      "legal_entity_id": "ORG-BC",
+      "type": "retainer",
+      "pack": "accounting",
+      "owner_user_id": "U-003",
+      "status": "active",
+      "fee_synthetic_sgd_monthly": 1200,
+      "tasks": [
+        {"task_id": "T-5021", "title": "Oct bank reconciliation", "assignee": "U-005", "due": "2026-11-10", "status": "done"},
+        {"task_id": "T-5022", "title": "GST draft Q3", "assignee": "U-005", "due": "2026-11-25", "status": "in_progress", "needs_review_gate": true}
+      ]
+    },
+    {
+      "eng_id": "E-503",
+      "client_id": "C-101",
+      "legal_entity_id": "ORG-BS",
+      "type": "project",
+      "pack": "search-fb",
+      "owner_user_id": "U-011",
+      "status": "active",
+      "fee_synthetic_note": "20% first-year salary (fake)",
+      "tasks": [
+        {"task_id": "T-5031", "title": "Restaurant Manager shortlist", "assignee": "U-011", "due": "2026-11-18", "status": "in_progress"}
+      ]
+    },
+    {
+      "eng_id": "E-504",
+      "client_id": "C-102",
+      "legal_entity_id": "ORG-BC",
+      "type": "project",
+      "pack": "hr-advisory",
+      "owner_user_id": "U-007",
+      "status": "active",
+      "fee_synthetic_sgd_fixed": 8500,
+      "tasks": [
+        {"task_id": "T-5041", "title": "Discovery workshop notes", "assignee": "U-007", "due": "2026-11-12", "status": "done"},
+        {"task_id": "T-5042", "title": "Employee handbook draft v1", "assignee": "U-007", "due": "2026-11-22", "status": "open"}
+      ]
+    },
+    {
+      "eng_id": "E-505",
+      "client_id": "C-103",
+      "legal_entity_id": "ORG-BC",
+      "type": "package",
+      "pack": "corp-sec",
+      "owner_user_id": "U-002",
+      "status": "active",
+      "package_name_synthetic": "Standard Incorporation",
+      "tasks": [
+        {"task_id": "T-5051", "title": "Collect director KYC", "assignee": "U-009", "due": "2026-11-16", "status": "blocked"},
+        {"task_id": "T-5052", "title": "BizFile pack ReviewGate", "assignee": "U-002", "due": "2026-11-19", "status": "waiting", "needs_review_gate": true}
+      ]
+    },
+    {
+      "eng_id": "E-506",
+      "client_id": "C-104",
+      "legal_entity_id": "ORG-BC",
+      "type": "project",
+      "pack": "management-advisory",
+      "owner_user_id": "U-004",
+      "status": "proposed",
+      "fee_synthetic_sgd_fixed": 18000
+    },
+    {
+      "eng_id": "E-507",
+      "client_id": "C-108",
+      "legal_entity_id": "ORG-BC",
+      "type": "project",
+      "pack": "project-mgmt",
+      "owner_user_id": "U-004",
+      "status": "active",
+      "fee_synthetic_sgd_fixed": 22000,
+      "tasks": [
+        {"task_id": "T-5071", "title": "Contractor tender summary", "assignee": "U-004", "due": "2026-11-21", "status": "open"}
+      ]
+    },
+    {
+      "eng_id": "E-508",
+      "client_id": "C-106",
+      "legal_entity_id": "ORG-BC",
+      "type": "retainer",
+      "pack": "corp-sec",
+      "owner_user_id": "U-002",
+      "status": "active",
+      "fee_synthetic_sgd_monthly": 300
+    }
+  ]
+}

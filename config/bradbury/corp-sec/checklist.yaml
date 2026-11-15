@@ -1,0 +1,32 @@
+# SYNTHETIC playbook stub — Bradbury SIOS Phase 0
+pack: corp-sec
+label: Corporate Secretarial
+is_synthetic_playbook: true
+version: 0.1.0
+review_gates:
+  - filing_pack_ready
+checklists:
+  incorporation_package:
+    - id: name_availability
+      title: Name availability
+    - id: kyc_director_ids
+      title: KYC / director IDs
+    - id: ssic_activity
+      title: SSIC & activity description
+    - id: constitution_prep
+      title: Constitution / M&A prep
+    - id: bizfile_pack_review_gate
+      title: BizFile pack ReviewGate
+      needs_review_gate: true
+    - id: lodge_human
+      title: Lodge (human)
+      human_only: true
+    - id: share_certs_seal
+      title: Share certificates / seal
+    - id: handover_calendar
+      title: Handover pack + calendar spawn
+  retainer_corp_sec:
+    - id: annual_return_pack
+      title: Annual return working pack
+    - id: agm_notice
+      title: AGM notice draft

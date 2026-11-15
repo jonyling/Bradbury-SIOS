@@ -1,8 +1,8 @@
-"""Reader ontology packs.
+"""Legacy reader ontology packs (GRIT-Scan DNA).
 
-A pack is a folder under ``config/`` with a ``pack.json`` manifest. The manifest names the level (``GROUP``, ``BA``, ``ENTITY``, or ``FUNCTION``), the parent and children, and the register files. The loader reads those files. Every row comes from a register file.
+A pack is a folder under ``config/`` with a ``pack.json`` manifest. The manifest names the level (``GROUP``, ``BA``, ``ENTITY``, or ``FUNCTION``), the parent and children, and the register files.
 
-Current packs: ``urs``, ``urs-tw``, ``dsc``, ``ca``, ``marine``, ``ste``, and ``wsh``. ``wsh`` is Workplace Safety & Health, a functional pack with a monthly discussion digest (spec 47). Add another business area as data, using the guide in ``docs/add-a-business-area.md``.
+Bradbury SIOS Phase 0: STE packs (urs, ste, wsh, …) are archived under ``archive/legacy-ste/config/``. Active Bradbury service-line stubs live under ``config/bradbury/`` and are not loaded by this module. ``manifests()`` returns whatever remains under ``config/*/pack.json``.
 """
 
 from __future__ import annotations

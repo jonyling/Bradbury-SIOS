@@ -1,0 +1,28 @@
+# SYNTHETIC playbook stub — Bradbury SIOS Phase 0
+pack: accounting
+label: Accounting & Finance
+is_synthetic_playbook: true
+version: 0.1.0
+review_gates:
+  - fs_send
+  - gst_ready
+checklists:
+  monthly_close:
+    - id: open_period
+      title: Open period
+    - id: bank_statements
+      title: Bank feeds / statements
+    - id: ap_ar_review
+      title: AP/AR review
+    - id: payroll_journals
+      title: Payroll journals (if in scope)
+    - id: gst_draft
+      title: GST draft
+    - id: mgmt_accounts_draft
+      title: Management accounts draft
+    - id: senior_review_gate
+      title: Senior ReviewGate
+      needs_review_gate: true
+    - id: client_send
+      title: Client send
+      needs_review_gate: true
